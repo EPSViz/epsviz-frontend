@@ -64,11 +64,15 @@ let test = [
 
 // format data into xy datapoints
 function formatData(test) {
-  const result = [];
-  for (let i = 0; i < test.length; i++) {
-    result.push({ x: test[i].actualEPS, y: test[i].consensusEPS });
+  if (test) {
+    const result = [];
+    for (let i = 0; i < test.length; i++) {
+      result.push({ x: test[i].actualEPS, y: test[i].consensusEPS });
+    }
+    return result;
+  } else {
+    return [];
   }
-  return result;
 }
 
 // function formatDataActual(test, test2) {
@@ -83,6 +87,7 @@ function ScatterChart() {
   const searchHistory = useStoreState((state) => state.searchHistory);
   console.log(searchHistory);
   const epsData = searchHistory[searchHistory.length - 1];
+  console.log("test", epsData);
   // const epsData = searchHistory[searchHistory.length - 1];
 
   const data = {
@@ -94,12 +99,12 @@ function ScatterChart() {
         backgroundColor: "Green",
         data: formatData(epsData),
       },
-      {
-        label: "Actual EPS",
-        pointBackgroundColor: "Red",
-        backgroundColor: "Red",
-        data: [{ x: 1, y: 2 }],
-      },
+      // {
+      //   label: "Actual EPS",
+      //   pointBackgroundColor: "Red",
+      //   backgroundColor: "Red",
+      //   data: [{ x: 1, y: 2 }],
+      // },
     ],
   };
 
