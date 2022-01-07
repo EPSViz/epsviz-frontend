@@ -1,28 +1,11 @@
 import { Card, TextField, Box, Button, Typography } from "@mui/material";
 
-import { connect } from "react-redux";
+import { useStoreActions } from "easy-peasy";
 import React, { useState } from "react";
-import axios from "axios";
-
-function formatData(eps) {
-  // add in eps and trends later
-  const result = [];
-  for (let i = 0; i < eps.length; i++) {
-    result.push({ x: eps[i].consensusEPS, y: eps[i].actualEPS });
-  }
-  return result;
-}
 
 function Input({ childToParent }) {
   const [ticker, setTicker] = useState("");
   const [keyword, setKeyword] = useState("");
-
-  async function callAPI() {
-    const json = await axios.get(
-      `http://4a8d-2406-3003-206b-1f20-c89b-ba5d-585e-4347.ngrok.io/companies/${ticker}`
-    );
-    return json;
-  }
 
   const tickerChange = (e) => {
     setTicker(e.target.value);
@@ -31,6 +14,8 @@ function Input({ childToParent }) {
   const keywordChange = (e) => {
     setKeyword(e.target.value);
   };
+
+  const addSearch = useStoreActions((actions) => actions.addSearch);
 
   // test data
   let test = [
@@ -82,29 +67,6 @@ function Input({ childToParent }) {
     { EPSReportDate: "2010-11-09", consensusEPS: "-0.43", actualEPS: "-0.37" },
   ];
 
-  let test2 = [
-    { trend: "50" },
-    { trend: "50" },
-    { trend: "50" },
-    { trend: "50" },
-    { trend: "50" },
-    { trend: "50" },
-    { trend: "50" },
-    { trend: "50" },
-    { trend: "50" },
-    { trend: "50" },
-    { trend: "50" },
-    { trend: "50" },
-    { trend: "50" },
-    { trend: "50" },
-    { trend: "50" },
-    { trend: "50" },
-    { trend: "50" },
-    { trend: "50" },
-    { trend: "50" },
-    { trend: "50" },
-  ];
-
   return (
     <div>
       <Card
@@ -141,12 +103,7 @@ function Input({ childToParent }) {
             <Button
               sx={{ my: 2 }}
               variant="contained"
-              onClick={
-                () => childToParent(test)
-                // const data = callAPI();
-                // setChartData(formatData(test));
-                // this.props.getData(ticker.toUpperCase(), keyword);
-              }
+              onClick={() => addSearch(ticker, keyword)}
             >
               <Typography variant="body1">Search</Typography>
             </Button>
@@ -157,17 +114,4 @@ function Input({ childToParent }) {
   );
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getData: (ticker, keyword) =>
-      dispatch({
-        type: "getData",
-        payload: {
-          ticker: ticker,
-          keyword: keyword,
-        },
-      }),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(Input);
+export default Input;

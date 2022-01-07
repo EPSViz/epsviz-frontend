@@ -8,8 +8,6 @@ import ScatterChart from "./components/ScatterChart.js";
 function App() {
   const [chartData, setChartData] = useState([]);
 
-  console.log(chartData);
-
   const childToParent = () => {};
 
   return (
