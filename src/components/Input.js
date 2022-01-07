@@ -4,27 +4,26 @@ import { connect } from "react-redux";
 import React, { useState } from "react";
 import axios from "axios";
 
-
-
-
 function formatData(eps) {
   // add in eps and trends later
   const result = [];
   for (let i = 0; i < eps.length; i++) {
-    result.push({ x : eps[i].consensusEPS, y : eps[i].actualEPS });
+    result.push({ x: eps[i].consensusEPS, y: eps[i].actualEPS });
   }
   return result;
 }
 
-function Input({props, setChartData}) {
+function Input({ childToParent }) {
   const [ticker, setTicker] = useState("");
   const [keyword, setKeyword] = useState("");
 
   async function callAPI() {
-    const json = await axios.get(`http://4a8d-2406-3003-206b-1f20-c89b-ba5d-585e-4347.ngrok.io/companies/${ticker}`)
+    const json = await axios.get(
+      `http://4a8d-2406-3003-206b-1f20-c89b-ba5d-585e-4347.ngrok.io/companies/${ticker}`
+    );
     return json;
   }
-  
+
   const tickerChange = (e) => {
     setTicker(e.target.value);
   };
@@ -33,6 +32,7 @@ function Input({props, setChartData}) {
     setKeyword(e.target.value);
   };
 
+  // test data
   let test = [
     { EPSReportDate: "2021-10-20", consensusEPS: "1.59", actualEPS: "1.86" },
     { EPSReportDate: "2021-10-20", consensusEPS: "1.59", actualEPS: "1.86" },
@@ -82,6 +82,29 @@ function Input({props, setChartData}) {
     { EPSReportDate: "2010-11-09", consensusEPS: "-0.43", actualEPS: "-0.37" },
   ];
 
+  let test2 = [
+    { trend: "50" },
+    { trend: "50" },
+    { trend: "50" },
+    { trend: "50" },
+    { trend: "50" },
+    { trend: "50" },
+    { trend: "50" },
+    { trend: "50" },
+    { trend: "50" },
+    { trend: "50" },
+    { trend: "50" },
+    { trend: "50" },
+    { trend: "50" },
+    { trend: "50" },
+    { trend: "50" },
+    { trend: "50" },
+    { trend: "50" },
+    { trend: "50" },
+    { trend: "50" },
+    { trend: "50" },
+  ];
+
   return (
     <div>
       <Card
@@ -118,8 +141,8 @@ function Input({props, setChartData}) {
             <Button
               sx={{ my: 2 }}
               variant="contained"
-              onClick={ 
-                () => {props.sendToParent(test)}
+              onClick={
+                () => childToParent(test)
                 // const data = callAPI();
                 // setChartData(formatData(test));
                 // this.props.getData(ticker.toUpperCase(), keyword);
@@ -134,8 +157,6 @@ function Input({props, setChartData}) {
   );
 }
 
-
-
 const mapDispatchToProps = (dispatch) => {
   return {
     getData: (ticker, keyword) =>
@@ -143,8 +164,8 @@ const mapDispatchToProps = (dispatch) => {
         type: "getData",
         payload: {
           ticker: ticker,
-          keyword: keyword
-        }
+          keyword: keyword,
+        },
       }),
   };
 };

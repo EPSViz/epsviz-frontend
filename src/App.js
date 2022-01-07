@@ -10,10 +10,12 @@ function App() {
 
   console.log(chartData);
 
+  const childToParent = () => {};
+
   return (
     <div className="App" style={{ backgroundColor: "#FAFAFA" }}>
       <div className="App-container">
-        <Input toChild={chartData} sendToParent={setChartData} />
+        <Input childToParent={childToParent} />
       </div>
       <div className="Chart-container">
         <ScatterChart />

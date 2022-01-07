@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Chart as ChartJS,
   LinearScale,
@@ -8,14 +8,10 @@ import {
   Legend,
 } from "chart.js";
 import { Scatter } from "react-chartjs-2";
-import { connect } from "react-redux";
 
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
 
 // test data
-// let epsv = [-1.5,-2,3,4,5,-6,7,8,-9,10,11,-4,1,5,0,7,2,5,10]
-// let trendsv = [35,62,72,45,36,15,73,99,34,86,20,41,61,32,42,65,75,12,32,62]
-
 let test = [
   { EPSReportDate: "2021-10-20", consensusEPS: "1.59", actualEPS: "1.86" },
   { EPSReportDate: "2021-10-20", consensusEPS: "1.59", actualEPS: "1.86" },
@@ -65,40 +61,47 @@ let test = [
   { EPSReportDate: "2010-11-09", consensusEPS: "-0.43", actualEPS: "-0.37" },
 ];
 
-function formatData(eps) {
-  // add in eps and trends later
+let test2 = [
+  { trend: "50" },
+  { trend: "50" },
+  { trend: "50" },
+  { trend: "50" },
+  { trend: "50" },
+  { trend: "50" },
+  { trend: "50" },
+  { trend: "50" },
+  { trend: "50" },
+  { trend: "50" },
+  { trend: "50" },
+  { trend: "50" },
+  { trend: "50" },
+  { trend: "50" },
+  { trend: "50" },
+  { trend: "50" },
+  { trend: "50" },
+  { trend: "50" },
+  { trend: "50" },
+  { trend: "50" },
+];
+
+// format data into xy datapoints
+function formatDataConsensus(test, test2) {
   const result = [];
-  for (let i = 0; i < eps.length; i++) {
-    result.push({ x : eps[i].consensusEPS, y : eps[i].actualEPS });
+  for (let i = 0; i < test.length; i++) {
+    result.push({ x: test2[i].trend, y: test[i].consensusEPS });
+  }
+  return result;
+}
+
+function formatDataActual(test, test2) {
+  const result = [];
+  for (let i = 0; i < test.length; i++) {
+    result.push({ x: test2[i].trend, y: test[i].actualEPS });
   }
   return result;
 }
 
 function ScatterChart({ chartData }) {
-
-  const data = {
-    labels: ["Consensus EPS", "Actual EPS"],
-    datasets: [
-      {
-        label: "Consensus EPS",
-        pointBackgroundColor: "Green",
-        backgroundColor: "Green",
-        data: [
-          {
-            x: 5,
-            y: 10,
-          },
-        ],
-      },
-      {
-        label: "Actual EPS",
-        pointBackgroundColor: "Red",
-        backgroundColor: "Red",
-        data: chartData,
-      },
-    ],
-  };
-
   return (
     <div>
       <h1>EPSViz Scatter Plot</h1>
@@ -109,6 +112,24 @@ function ScatterChart({ chartData }) {
     </div>
   );
 }
+
+const data = {
+  labels: ["Consensus EPS", "Actual EPS"],
+  datasets: [
+    {
+      label: "Consensus EPS",
+      pointBackgroundColor: "Green",
+      backgroundColor: "Green",
+      data: formatDataConsensus(test, test2),
+    },
+    {
+      label: "Actual EPS",
+      pointBackgroundColor: "Red",
+      backgroundColor: "Red",
+      data: formatDataActual(test, test2),
+    },
+  ],
+};
 
 const options = {
   scales: {
@@ -141,16 +162,14 @@ const options = {
   },
 };
 
+// const mapStateToProps = (state) => {
+//   return {
+//     eps: state.eps,
+//     trends: state.trends,
+//     rSquare: state.rSquare,
+//     pValue: state.pValue,
+//     nextPredictedEPS: state.nextPredictedEPS,
+//   };
+// };
 
-
-const mapStateToProps = (state) => {
-  return {
-    eps: state.eps,
-    trends: state.trends,
-    rSquare: state.rSquare,
-    pValue: state.pValue,
-    nextPredictedEPS: state.nextPredictedEPS,
-  };
-};
-
-export default connect(mapStateToProps, null)(ScatterChart);
+export default connect(null, null)(ScatterChart);
