@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Chart as ChartJS,
   LinearScale,
@@ -63,23 +63,13 @@ let test = [
 ];
 
 // format data into xy datapoints
-function formatDataConsensus(data) {
-  if (data) {
-    const result = [];
-    for (let i = 0; i < data.length; i++) {
-      result.push({ x: data[i].sentiment, y: data[i].consensusEPS });
-    }
-    return result;
-  } else {
-    return [];
-  }
-}
 
 function formatDataActual(data) {
   if (data) {
     const result = [];
     for (let i = 0; i < data.length; i++) {
-      result.push({ x: data[i].sentiment, y: data[i].actualEPS });
+      console.log(data[i].vec.sentiment);
+      result.push({ x: data[i].vec.sentiment, y: data[i].vec.eps });
     }
     return result;
   } else {
@@ -100,22 +90,29 @@ function ScatterChart() {
   console.log(searchHistory);
   const epsData = searchHistory[searchHistory.length - 1];
   console.log("test", epsData);
-  // const epsData = searchHistory[searchHistory.length - 1];
+
+  // const [dataset, setDataset] = useState([]);
+
+  var convertedData = [];
+
+  if (epsData) {
+    for (let i = 0; i < epsData.data.length; i++) {
+      convertedData.push({
+        x: epsData.data[i]["vec.sentiment"],
+        y: epsData.data[i]["vec.eps"],
+      });
+    }
+  }
+  // setDataset(convertedData);
 
   const data = {
-    labels: ["Consensus EPS", "Actual EPS"],
+    labels: ["Trend", "Actual EPS"],
     datasets: [
-      {
-        label: "Consensus EPS",
-        pointBackgroundColor: "Green",
-        backgroundColor: "Green",
-        data: formatDataConsensus(epsData),
-      },
       {
         label: "Actual EPS",
         pointBackgroundColor: "Red",
         backgroundColor: "Red",
-        data: formatDataActual(epsData),
+        data: convertedData,
       },
     ],
   };

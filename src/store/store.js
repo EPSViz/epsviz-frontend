@@ -7,7 +7,7 @@ export default createStore({
   searchHistory: [],
   addSearch: thunk(async (actions, ticker, keyword) => {
     const res = await axios.get(
-      `https://ed89-2406-3003-206b-1f20-7d71-aab2-8b74-430.ngrok.io/companies/${ticker}`
+      `https://ed89-2406-3003-206b-1f20-7d71-aab2-8b74-430.ngrok.io/api/${ticker}/${keyword}`
     );
     const search = res.data;
 
