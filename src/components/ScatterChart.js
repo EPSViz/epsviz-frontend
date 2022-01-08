@@ -63,11 +63,23 @@ let test = [
 ];
 
 // format data into xy datapoints
-function formatData(test) {
-  if (test) {
+function formatDataConsensus(data) {
+  if (data) {
     const result = [];
-    for (let i = 0; i < test.length; i++) {
-      result.push({ x: test[i].actualEPS, y: test[i].consensusEPS });
+    for (let i = 0; i < data.length; i++) {
+      result.push({ x: data[i].sentiment, y: data[i].consensusEPS });
+    }
+    return result;
+  } else {
+    return [];
+  }
+}
+
+function formatDataActual(data) {
+  if (data) {
+    const result = [];
+    for (let i = 0; i < data.length; i++) {
+      result.push({ x: data[i].sentiment, y: data[i].actualEPS });
     }
     return result;
   } else {
@@ -97,14 +109,14 @@ function ScatterChart() {
         label: "Consensus EPS",
         pointBackgroundColor: "Green",
         backgroundColor: "Green",
-        data: formatData(epsData),
+        data: formatDataConsensus(epsData),
       },
-      // {
-      //   label: "Actual EPS",
-      //   pointBackgroundColor: "Red",
-      //   backgroundColor: "Red",
-      //   data: [{ x: 1, y: 2 }],
-      // },
+      {
+        label: "Actual EPS",
+        pointBackgroundColor: "Red",
+        backgroundColor: "Red",
+        data: formatDataActual(epsData),
+      },
     ],
   };
 

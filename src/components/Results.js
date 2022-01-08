@@ -1,9 +1,14 @@
+import React from "react";
 import { Card, Typography } from "@mui/material";
+import { useStoreState } from "easy-peasy";
 
 export default function Results() {
   // need to link to predicted EPS later...
   let prediction = 3;
   let actual = 2;
+  // const searchHistory = useStoreState((state) => state.searchHistory);
+  // const epsData = searchHistory[searchHistory.length - 1];
+
   return (
     <div>
       <Card
